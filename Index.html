@@ -1,0 +1,32 @@
+<!-- templates/index.html - Basic Frontend -->
+ 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FAQ Assistant</title>
+</head>
+<body>
+    <h1>FAQ Assistant</h1>
+    <div id="chat">
+        <div id="responses"></div>
+        <input type="text" id="question" placeholder="Ask something...">
+        <button onclick="askQuestion()">Ask</button>
+    </div>
+
+    <script>
+        async function askQuestion() {
+            const question = document.getElementById('question').value;
+            const response = await fetch('/ask', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({question: question})
+            });
+            
+            const data = await response.json();
+            const responsesDiv = document.getElementById('responses');
+            responsesDiv.innerHTML += `<p><b>You:</b> ${question}</p>`;
+            responsesDiv.innerHTML += `<p><b>Assistant:</b> ${data.answer}</p>`;
+        }
+    </script>
+</body>
+</html>
